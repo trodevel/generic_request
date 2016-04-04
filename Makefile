@@ -11,6 +11,22 @@ MODE ?= debug
 
 ###################################################################
 
+BOOST_PATH := $(shell echo $$BOOST_PATH)
+
+ifeq (,$(BOOST_PATH))
+    $(error 'please define path to boost $$BOOST_PATH')
+endif
+
+###################################################################
+
+BOOST_INC=$(BOOST_PATH)
+BOOST_LIB_PATH=$(BOOST_PATH)/stage/lib
+
+BOOST_LIB_NAMES :=
+BOOST_LIBS = $(patsubst %,$(BOOST_LIB_PATH)/libboost_%.a,$(BOOST_LIB_NAMES))
+
+###################################################################
+
 EXT_LIBS=
 
 ###################################################################
@@ -49,7 +65,8 @@ INCL = -I$(BOOST_INC) -I.
 
 STATICLIB=$(LIBNAME).a
 
-SRCC = request.cpp \
+SRCC = request_decoder.cpp \
+	request.cpp \
 	request_parser.cpp \
 	str_helper.cpp \
 
