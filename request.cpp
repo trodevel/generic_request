@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3616 $ $Date:: 2016-04-03 #$ $Author: serge $
+// $Revision: 3644 $ $Date:: 2016-04-06 #$ $Author: serge $
 
 #include "request.h"        // self
 
@@ -59,7 +59,7 @@ bool Request::has_param( const std::string & key ) const
     return params_.count( key ) > 0;
 }
 
-bool Request::has_param( const std::string & key, std::string & value ) const
+bool Request::get_value( const std::string & key, std::string & value ) const
 {
     auto it = params_.find( key );
 
@@ -70,5 +70,43 @@ bool Request::has_param( const std::string & key, std::string & value ) const
 
     return true;
 }
+
+bool Request::get_value_uint32( const std::string & key, uint32_t & value ) const
+{
+    std::string s;
+
+    if( get_value( key, s ) == false )
+        return false;
+
+    try
+    {
+        value = std::stoul( s );
+        return true;
+    }
+    catch( std::exception & e )
+    {
+        return false;
+    }
+}
+
+bool Request::get_value_uint16( const std::string & key, uint16_t & value ) const
+{
+    std::string s;
+
+    if( get_value( key, s ) == false )
+        return false;
+
+    try
+    {
+        value = std::stoul( s );
+        return true;
+    }
+    catch( std::exception & e )
+    {
+        //( "get_value_uint16: " + key + " is not numerical" );
+        return false;
+    }
+}
+
 
 } // namespace generic_request
