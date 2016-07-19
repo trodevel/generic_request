@@ -19,9 +19,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3644 $ $Date:: 2016-04-06 #$ $Author: serge $
+// $Revision: 4217 $ $Date:: 2016-07-19 #$ $Author: serge $
 
 #include "request.h"        // self
+
+#include <sstream>          // std::stringstream
 
 namespace generic_request
 {
@@ -104,6 +106,75 @@ bool Request::get_value_uint16( const std::string & key, uint16_t & value ) cons
     catch( std::exception & e )
     {
         //( "get_value_uint16: " + key + " is not numerical" );
+        return false;
+    }
+}
+
+bool Request::get_value_uint8( const std::string & key, uint8_t & value ) const
+{
+    std::string s;
+
+    if( get_value( key, s ) == false )
+        return false;
+
+    try
+    {
+        value = (uint8_t)std::stoul( s );
+        return true;
+    }
+    catch( std::exception & e )
+    {
+        return false;
+    }
+}
+
+bool Request::get_vector( const std::string & key, std::vector<std::string> & v ) const
+{
+    std::string val;
+
+    if( get_value( key, val ) == false )
+        return false;
+
+    try
+    {
+        std::stringstream ss( val );
+        std::string s;
+
+        while( getline( ss, s, ',' ) )
+        {
+            v.push_back( s );
+        }
+        return true;
+    }
+    catch( std::exception & e )
+    {
+        return false;
+    }
+
+}
+
+bool Request::get_vector_uint32( const std::string & key, std::vector<uint32_t> & v ) const
+{
+    std::vector<std::string> vs;
+
+    if( get_vector( key, vs ) == false )
+        return false;
+
+    try
+    {
+        for( auto & s : vs )
+        {
+            if( s.empty() == false )
+            {
+                uint32_t value = (uint8_t)std::stoul( s );
+
+                v.push_back( value );
+            }
+        }
+        return true;
+    }
+    catch( std::exception & e )
+    {
         return false;
     }
 }

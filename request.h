@@ -19,13 +19,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3644 $ $Date:: 2016-04-06 #$ $Author: serge $
+// $Revision: 4217 $ $Date:: 2016-07-19 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_H
 #define GENERIC_REQUEST_H
 
 #include <string>       // std::string
 #include <map>
+#include <vector>       // std::vector
 
 namespace generic_request
 {
@@ -51,6 +52,9 @@ public:
     bool get_value( const std::string & key, std::string & value ) const;
     bool get_value_uint32( const std::string & key, uint32_t & value ) const;
     bool get_value_uint16( const std::string & key, uint16_t & value ) const;
+    bool get_value_uint8( const std::string & key, uint8_t & value ) const;
+    bool get_vector( const std::string & key, std::vector<std::string> & v ) const;
+    bool get_vector_uint32( const std::string & key, std::vector<uint32_t> & v ) const;
 
 private:
     ParamMap        params_;
