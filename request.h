@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4217 $ $Date:: 2016-07-19 #$ $Author: serge $
+// $Revision: 7629 $ $Date:: 2017-08-16 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_H
 #define GENERIC_REQUEST_H
@@ -49,12 +49,21 @@ public:
 
     const std::string & get_param( const std::string & key ) const;
     bool has_param( const std::string & key ) const;
-    bool get_value( const std::string & key, std::string & value ) const;
-    bool get_value_uint32( const std::string & key, uint32_t & value ) const;
-    bool get_value_uint16( const std::string & key, uint16_t & value ) const;
-    bool get_value_uint8( const std::string & key, uint8_t & value ) const;
-    bool get_vector( const std::string & key, std::vector<std::string> & v ) const;
-    bool get_vector_uint32( const std::string & key, std::vector<uint32_t> & v ) const;
+    bool get_value( const std::string & key, std::string & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, uint32_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, uint16_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, uint8_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, bool & value, bool throw_on_error = false ) const;
+    bool get_vector( const std::string & key, std::vector<std::string> & v, bool throw_on_error = false ) const;
+    bool get_vector_uint32( const std::string & key, std::vector<uint32_t> & v, bool throw_on_error = false ) const;
+
+private:
+
+    template <class T>
+    bool get_value_converted_t( T * res, const std::string & key_name, bool throw_on_error ) const;
+
+    template <class T>
+    bool get_vector_converted_t( const std::string & key, std::vector<T> & v, bool throw_on_error ) const;
 
 private:
     ParamMap        params_;

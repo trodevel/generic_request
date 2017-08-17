@@ -19,11 +19,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4217 $ $Date:: 2016-07-19 #$ $Author: serge $
+// $Revision: 7629 $ $Date:: 2017-08-16 #$ $Author: serge $
 
 #include "request.h"        // self
 
 #include <sstream>          // std::stringstream
+#include <stdexcept>        // std::runtime_error
+
+#include "../utils/to_value.h"  // to_value()
 
 namespace generic_request
 {
@@ -47,10 +50,9 @@ const std::string & Request::get_param( const std::string & key ) const
 {
     static const std::string empty;
 
-    ParamMap::const_iterator it_end = params_.end();
-    ParamMap::const_iterator it = params_.find( key );
+    auto it = params_.find( key );
 
-    if( it == it_end )
+    if( it == params_.end() )
         return empty;
 
     return it->second;
@@ -61,78 +63,103 @@ bool Request::has_param( const std::string & key ) const
     return params_.count( key ) > 0;
 }
 
-bool Request::get_value( const std::string & key, std::string & value ) const
+bool Request::get_value( const std::string & key, std::string & value, bool throw_on_error ) const
 {
     auto it = params_.find( key );
 
     if( it == params_.end() )
+    {
+        if( throw_on_error )
+            throw std::runtime_error( "cannot find key '" + key + "'" );
+
         return false;
+    }
 
     value = it->second;
 
     return true;
 }
 
-bool Request::get_value_uint32( const std::string & key, uint32_t & value ) const
+template <class T>
+bool Request::get_value_converted_t( T * res, const std::string & key, bool throw_on_error ) const
 {
-    std::string s;
+    std::string val_str;
 
-    if( get_value( key, s ) == false )
+    if( get_value( key, val_str, throw_on_error ) == false )
         return false;
 
     try
     {
-        value = std::stoul( s );
+        utils::to_value( res, val_str );
+
         return true;
     }
     catch( std::exception & e )
     {
+        if( throw_on_error )
+            throw std::runtime_error( "conversion error: key '" + key + "', value '" + val_str + "'" );
+
         return false;
     }
 }
 
-bool Request::get_value_uint16( const std::string & key, uint16_t & value ) const
+template <class T>
+bool Request::get_vector_converted_t( const std::string & key, std::vector<T> & v, bool throw_on_error ) const
 {
-    std::string s;
+    std::vector<std::string> vs;
 
-    if( get_value( key, s ) == false )
+    if( get_vector( key, vs, throw_on_error ) == false )
         return false;
 
-    try
+    for( auto & s : vs )
     {
-        value = std::stoul( s );
-        return true;
+        if( s.empty() == false )
+        {
+            try
+            {
+                T value;
+
+                utils::to_value( & value, s );
+
+                v.push_back( value );
+            }
+            catch( std::exception & e )
+            {
+                if( throw_on_error )
+                    throw std::runtime_error( "vector conversion error: key '" + key + "', value '" + s + "'" );
+
+                return false;
+            }
+        }
     }
-    catch( std::exception & e )
-    {
-        //( "get_value_uint16: " + key + " is not numerical" );
-        return false;
-    }
+    return true;
 }
 
-bool Request::get_value_uint8( const std::string & key, uint8_t & value ) const
+bool Request::get_value_converted( const std::string & key, uint32_t & value, bool throw_on_error ) const
 {
-    std::string s;
-
-    if( get_value( key, s ) == false )
-        return false;
-
-    try
-    {
-        value = (uint8_t)std::stoul( s );
-        return true;
-    }
-    catch( std::exception & e )
-    {
-        return false;
-    }
+    return get_value_converted_t( & value, key, throw_on_error );
 }
 
-bool Request::get_vector( const std::string & key, std::vector<std::string> & v ) const
+bool Request::get_value_converted( const std::string & key, uint16_t & value, bool throw_on_error ) const
+{
+    return get_value_converted_t( & value, key, throw_on_error );
+}
+
+bool Request::get_value_converted( const std::string & key, uint8_t & value, bool throw_on_error ) const
+{
+    return get_value_converted_t( & value, key, throw_on_error );
+}
+
+bool Request::get_value_converted( const std::string & key, bool & value, bool throw_on_error ) const
+{
+    return get_value_converted_t( & value, key, throw_on_error );
+}
+
+bool Request::get_vector( const std::string & key, std::vector<std::string> & v, bool throw_on_error ) const
 {
     std::string val;
 
-    if( get_value( key, val ) == false )
+    if( get_value( key, val, throw_on_error ) == false )
         return false;
 
     try
@@ -153,30 +180,9 @@ bool Request::get_vector( const std::string & key, std::vector<std::string> & v 
 
 }
 
-bool Request::get_vector_uint32( const std::string & key, std::vector<uint32_t> & v ) const
+bool Request::get_vector_uint32( const std::string & key, std::vector<uint32_t> & v, bool throw_on_error ) const
 {
-    std::vector<std::string> vs;
-
-    if( get_vector( key, vs ) == false )
-        return false;
-
-    try
-    {
-        for( auto & s : vs )
-        {
-            if( s.empty() == false )
-            {
-                uint32_t value = (uint8_t)std::stoul( s );
-
-                v.push_back( value );
-            }
-        }
-        return true;
-    }
-    catch( std::exception & e )
-    {
-        return false;
-    }
+    return get_vector_converted_t( key, v, throw_on_error );
 }
 
 
