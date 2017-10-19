@@ -2,9 +2,21 @@
 
 #include "request_parser.h" // to_request()
 
+void test_4( const generic_request::Request & r )
+{
+    auto & params = r.get_untouched_params();
+
+    std::cout << "untouched params:\n";
+
+    for( auto & p : params )
+    {
+        std::cout << p.first << " = " << p.second << "\n";
+    }
+}
+
 int main()
 {
-    auto r = generic_request::RequestParser::to_request( "A=1&B=2&C=xx,yy,zz&D=1,2,3&E=1,,, 2,3 ,4," );
+    auto r = generic_request::RequestParser::to_request( "A=1&B=2&C=xx,yy,zz&D=1,2,3&E=1,,, 2,3 ,4,&PAR_1=untouched param&PAR_2=another param" );
 
     std::cout << r.get_param( "A" ) << "\n";
     std::cout << r.get_param( "B" ) << "\n";
@@ -37,6 +49,8 @@ int main()
         std::cout << s << " ";
     }
     std::cout << "\n";
+
+    test_4( r );
 
     return 0;
 }

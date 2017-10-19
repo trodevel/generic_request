@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7629 $ $Date:: 2017-08-16 #$ $Author: serge $
+// $Revision: 8103 $ $Date:: 2017-10-19 #$ $Author: serge $
 
 #include "request.h"        // self
 
@@ -37,13 +37,20 @@ Request::Request()
 
 Request::Request(
         const ParamMap  & params ):
-            params_( params )
+            params_( params ),
+            untouched_params_( params )
+
 {
 }
 
 const Request::ParamMap & Request::get_params() const
 {
     return params_;
+}
+
+const Request::ParamMap & Request::get_untouched_params() const
+{
+    return untouched_params_;
 }
 
 const std::string & Request::get_param( const std::string & key ) const
@@ -54,6 +61,8 @@ const std::string & Request::get_param( const std::string & key ) const
 
     if( it == params_.end() )
         return empty;
+
+    touch( key );
 
     return it->second;
 }
@@ -75,9 +84,15 @@ bool Request::get_value( const std::string & key, std::string & value, bool thro
         return false;
     }
 
+    touch( key );
     value = it->second;
 
     return true;
+}
+
+void Request::touch( const std::string & key ) const
+{
+    untouched_params_.erase( key );
 }
 
 template <class T>

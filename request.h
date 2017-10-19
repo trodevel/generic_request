@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7629 $ $Date:: 2017-08-16 #$ $Author: serge $
+// $Revision: 8103 $ $Date:: 2017-10-19 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_H
 #define GENERIC_REQUEST_H
@@ -46,6 +46,7 @@ public:
             const ParamMap  & params );
 
     const ParamMap  & get_params() const;
+    const ParamMap  & get_untouched_params() const;
 
     const std::string & get_param( const std::string & key ) const;
     bool has_param( const std::string & key ) const;
@@ -59,6 +60,8 @@ public:
 
 private:
 
+    void touch( const std::string & key ) const;
+
     template <class T>
     bool get_value_converted_t( T * res, const std::string & key_name, bool throw_on_error ) const;
 
@@ -66,7 +69,8 @@ private:
     bool get_vector_converted_t( const std::string & key, std::vector<T> & v, bool throw_on_error ) const;
 
 private:
-    ParamMap        params_;
+    ParamMap            params_;
+    mutable ParamMap    untouched_params_;
 };
 
 } // namespace generic_request
