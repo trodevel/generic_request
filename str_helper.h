@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3616 $ $Date:: 2016-04-03 #$ $Author: serge $
+// $Revision: 8554 $ $Date:: 2018-01-18 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_STR_HELPER_H
 #define GENERIC_REQUEST_STR_HELPER_H
@@ -36,7 +36,7 @@ public:
 
 private:
     static std::string to_string( const Request::ParamMap & l );
-    static std::string to_string( const Request::ParamMap::value_type & l );
+    static std::ostream & write( std::ostream & os, const Request::ParamMap::value_type & l );
 };
 
 } // namespace generic_request

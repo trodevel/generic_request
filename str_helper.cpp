@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3616 $ $Date:: 2016-04-03 #$ $Author: serge $
+// $Revision: 8554 $ $Date:: 2018-01-18 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -30,32 +30,27 @@ namespace generic_request
 
 std::string StrHelper::to_string( const Request & l )
 {
-    std::ostringstream s;
-
-    s << "{ " << to_string ( l.params_ ) << "}";
-
-    return s.str();
+    return to_string( l.params_ );
 }
 
 std::string StrHelper::to_string( const Request::ParamMap & l )
 {
-    std::ostringstream s;
+    std::ostringstream os;
 
     for( auto & x : l )
     {
-        s << to_string ( x ) << " ";
+        write( os, x );
+        os << " ";
     }
 
-    return s.str();
+    return os.str();
 }
 
-std::string StrHelper::to_string( const Request::ParamMap::value_type & l )
+std::ostream & StrHelper::write( std::ostream & os, const Request::ParamMap::value_type & l )
 {
-    std::ostringstream s;
+    os << l.first << "=" << l.second;
 
-    s << l.first << "=" << l.second;
-
-    return s.str();
+    return os;
 }
 
 } // namespace generic_request
