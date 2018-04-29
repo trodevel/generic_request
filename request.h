@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8112 $ $Date:: 2017-10-23 #$ $Author: serge $
+// $Revision: 8966 $ $Date:: 2018-04-27 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_H
 #define GENERIC_REQUEST_H
@@ -51,6 +51,7 @@ public:
     const std::string & get_param( const std::string & key ) const;
     bool has_param( const std::string & key ) const;
     bool get_value( const std::string & key, std::string & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, uint64_t & value, bool throw_on_error = false ) const;
     bool get_value_converted( const std::string & key, uint32_t & value, bool throw_on_error = false ) const;
     bool get_value_converted( const std::string & key, uint16_t & value, bool throw_on_error = false ) const;
     bool get_value_converted( const std::string & key, uint8_t & value, bool throw_on_error = false ) const;

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8554 $ $Date:: 2018-01-18 #$ $Author: serge $
+// $Revision: 8576 $ $Date:: 2018-01-19 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_STR_HELPER_H
 #define GENERIC_REQUEST_STR_HELPER_H

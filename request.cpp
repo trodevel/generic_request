@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8112 $ $Date:: 2017-10-23 #$ $Author: serge $
+// $Revision: 8966 $ $Date:: 2018-04-27 #$ $Author: serge $
 
 #include "request.h"        // self
 
@@ -148,6 +148,11 @@ bool Request::get_vector_converted_t( const std::string & key, std::vector<T> & 
         }
     }
     return true;
+}
+
+bool Request::get_value_converted( const std::string & key, uint64_t & value, bool throw_on_error ) const
+{
+    return get_value_converted_t( & value, key, throw_on_error );
 }
 
 bool Request::get_value_converted( const std::string & key, uint32_t & value, bool throw_on_error ) const
