@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "request_parser.h" // to_request()
+#include "parser.h" // to_request()
 
 void test_4( const generic_request::Request & r )
 {
@@ -16,7 +16,7 @@ void test_4( const generic_request::Request & r )
 
 int main()
 {
-    auto r = generic_request::RequestParser::to_request( "A=1&B=2&C=xx,yy,zz&D=1,2,3&E=1,,, 2,3 ,4,&PAR_1=untouched param&PAR_2=another param" );
+    auto r = generic_request::Parser::to_request( "A=1&B=2&C=xx,yy,zz&D=1,2,3&E=1,,, 2,3 ,4,&PAR_1=untouched param&PAR_2=another param" );
 
     std::cout << r.get_param( "A" ) << "\n";
     std::cout << r.get_param( "B" ) << "\n";

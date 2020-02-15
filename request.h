@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 10772 $ $Date:: 2019-04-05 #$ $Author: serge $
+// $Revision: 12750 $ $Date:: 2020-02-15 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_H
 #define GENERIC_REQUEST_H
@@ -57,6 +57,10 @@ public:
     bool get_value_converted( const std::string & key, uint32_t & value, bool throw_on_error = false ) const;
     bool get_value_converted( const std::string & key, uint16_t & value, bool throw_on_error = false ) const;
     bool get_value_converted( const std::string & key, uint8_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, int64_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, int32_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, int16_t & value, bool throw_on_error = false ) const;
+    bool get_value_converted( const std::string & key, int8_t & value, bool throw_on_error = false ) const;
     bool get_value_converted( const std::string & key, bool & value, bool throw_on_error = false ) const;
     bool get_vector( const std::string & key, std::vector<std::string> & v, bool throw_on_error = false ) const;
     bool get_vector_uint32( const std::string & key, std::vector<uint32_t> & v, bool throw_on_error = false ) const;

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3617 $ $Date:: 2016-04-03 #$ $Author: serge $
+// $Revision: 12747 $ $Date:: 2020-02-15 #$ $Author: serge $
 
 #ifndef GENERIC_REQUEST_REQUEST_PARSER_H
 #define GENERIC_REQUEST_REQUEST_PARSER_H
@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace generic_request
 {
 
-class RequestParser
+class Parser
 {
 public:
     struct MalformedRequest: public std::runtime_error

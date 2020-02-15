@@ -19,9 +19,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3617 $ $Date:: 2016-04-03 #$ $Author: serge $
+// $Revision: 12747 $ $Date:: 2020-02-15 #$ $Author: serge $
 
-#include "request_parser.h"         // self
+#include "parser.h"         // self
 
 #include "../utils/tokenizer.h"     // boost wrapper
 #include "../utils/trim.h"          // trim
@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace generic_request
 {
 
-Request RequestParser::to_request( const std::string & str )
+Request Parser::to_request( const std::string & str )
 {
     std::vector< std::string > pars;
     tokenize_to_vector( pars, str, "&" );
