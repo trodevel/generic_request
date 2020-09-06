@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12747 $ $Date:: 2020-02-15 #$ $Author: serge $
+// $Revision: 13720 $ $Date:: 2020-09-06 #$ $Author: serge $
 
 #include "parser.h"         // self
 
@@ -41,11 +41,17 @@ Request Parser::to_request( const std::string & str )
         std::vector< std::string > key_value;
         tokenize_to_vector( key_value, s, "=" );
 
-        if( key_value.size() != 2 )
+        if( key_value.empty() )
             continue;
 
-        const std::string & k = trim( key_value[0] );
-        const std::string & v = trim( key_value[1] );
+        std::string k;
+        std::string v;
+
+        if( key_value.size() > 0 )
+            k = trim( key_value[0] );
+
+        if( key_value.size() > 1 )
+            v = trim( key_value[1] );
 
         params[ k ] = v;
     }
